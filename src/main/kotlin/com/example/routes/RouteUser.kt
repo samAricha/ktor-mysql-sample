@@ -20,7 +20,7 @@ fun Route.userRoute() {
 //    val db: Database = DbConnection.getDatabaseInstance()
 
 
-    route("/user"){
+    route("/users"){
         val repository: UserRepository = UserRepositoryImpl()
 
 
@@ -34,27 +34,50 @@ fun Route.userRoute() {
             val userModel: UserModel = mapUserDtoToUserModel(userDto)
             println("userModel------> $userModel")
             val savedUser = repository.addUser(userModel)
-//
-//
-//
-//            if (savedUser != null){
-//                call.respond(
-//                    HttpStatusCode.OK,
-//                    GenericResponse(
-//                        isSuccess = true,
-//                        data = "user saved"
-//                    )
-//                )
-//
-//            }else{
-//                call.respond(
-//                    HttpStatusCode.BadRequest,
-//                    GenericResponse(
-//                        isSuccess = false,
-//                        data = "Error in registering user"
-//                    )
-//                )
-//            }
+
+
+            if (savedUser != null){
+                call.respond(
+                    HttpStatusCode.OK,
+                    GenericResponse(
+                        isSuccess = true,
+                        data = "user saved"
+                    )
+                )
+
+            }else{
+                call.respond(
+                    HttpStatusCode.BadRequest,
+                    GenericResponse(
+                        isSuccess = false,
+                        data = "Error in registering user"
+                    )
+                )
+            }
+        }
+
+
+        get("/all") {
+            val usersList = repository.getAllUsers()
+
+            if (usersList != null){
+                call.respond(
+                    HttpStatusCode.OK,
+                    GenericResponse(
+                        isSuccess = true,
+                        data = "users retrieved"
+                    )
+                )
+
+            }else{
+                call.respond(
+                    HttpStatusCode.BadRequest,
+                    GenericResponse(
+                        isSuccess = false,
+                        data = "Error in retrieving users"
+                    )
+                )
+            }
         }
 
 

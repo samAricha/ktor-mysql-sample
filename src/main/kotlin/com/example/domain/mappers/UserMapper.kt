@@ -11,3 +11,12 @@ fun mapUserDtoToUserModel(userDto: UserDto): UserModel {
         gender = userDto.gender ?: ""
     )
 }
+
+fun mapUserModelToUserDto(userModel: UserModel): UserDto {
+    return UserDto(
+        first = userModel.first,
+        last = userModel.last,
+        dob = userModel.dob,
+        gender = userModel.gender
+    )
+}
