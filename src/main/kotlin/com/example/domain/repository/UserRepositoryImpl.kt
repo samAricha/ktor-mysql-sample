@@ -2,8 +2,8 @@ package com.example.domain.repository
 
 import com.example.data.mysql.entity.UserEntity
 import com.example.domain.model.UserModel
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class UserRepositoryImpl : UserRepository{
@@ -15,12 +15,15 @@ class UserRepositoryImpl : UserRepository{
         dob = row[UserEntity.last],
         gender = row[UserEntity.gender],
     )
-    override fun getAllUsers(): List<UserEntity> = transaction{
-        TODO("Not yet implemented")
+    override fun getAllUsers(): List<UserModel> = transaction{
+        UserEntity.selectAll().map(::resultRowToUserModel)
     }
 
-    override fun getUser(id: Int): UserEntity? = transaction{
-        TODO("Not yet implemented")
+    override fun getUser(id: Int): UserModel? = transaction{
+        UserEntity
+            .selectAll().where { UserEntity.userId eq id }
+            .map(::resultRowToUserModel)
+            .singleOrNull()
     }
 
     override fun addUser(userModel: UserModel): UserModel? = transaction {
@@ -38,8 +41,13 @@ class UserRepositoryImpl : UserRepository{
         TODO("Not yet implemented")
     }
 
-    override fun updateUser(id: Int, draft: UserModel): Boolean = transaction {
-        TODO("Not yet implemented")
+    override fun updateUser(id: Int, userModel: UserModel): Boolean= transaction {
+        UserEntity.update({ UserEntity.userId eq id }) {
+            it[UserEntity.first] = userModel.first
+            it[UserEntity.last] = userModel.last
+            it[UserEntity.dob] = userModel.dob
+            it[UserEntity.gender] = userModel.gender
+        } > 0
     }
 
 }
