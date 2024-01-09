@@ -12,6 +12,8 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.json.JsonBuilder
+import kotlinx.serialization.json.JsonEncoder
 //import org.ktorm.database.Database
 //import org.ktorm.dsl.insert
 import kotlin.math.truncate
@@ -65,7 +67,7 @@ fun Route.userRoute() {
                     HttpStatusCode.OK,
                     GenericResponse(
                         isSuccess = true,
-                        data = "users retrieved"
+                        data =  usersList.toString()
                     )
                 )
 
