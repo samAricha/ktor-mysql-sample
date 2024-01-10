@@ -83,5 +83,17 @@ fun Route.userRoute() {
         }
 
 
+        get("/{id}") {
+//            val found = repository.find(call.parameters["id"]?.toInt()!!)
+//            found?.let { call.respond(it) } ?: call.respond(HttpStatusCode.NotFound)
+        }
+        delete("/{id}") {
+//            call.respond(repository.delete(call.parameters["id"]?.toInt()!!))
+        }
+        put("/{id}") {
+//            call.respond(repository.update(call.parameters["id"]?.toInt()!!, call.receive()))
+        }
+
+
     }
 }
