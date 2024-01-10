@@ -1,13 +1,13 @@
 package com.example.plugins
 
-import com.example.data.mysql.entity.UserEntity
+import com.example.data.mysql.migrations.migration1
+import com.example.data.mysql.seeders.demoData
 import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun Application.configureDataBase() {
-    val database = Database.connect(
+    val database: Database = Database.connect(
         url ="jdbc:mysql://localhost:3306/ktorm",
 //        driver = "com.mysql.cj.jdbc:Driver",
         user = "root",
@@ -15,7 +15,11 @@ fun Application.configureDataBase() {
     )
 
     transaction(database) {
-        SchemaUtils.create(UserEntity)
+        //migrations
+        migration1()
+        //seeders
+        demoData()
+
     }
 
 }
