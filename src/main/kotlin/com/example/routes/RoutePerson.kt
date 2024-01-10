@@ -1,8 +1,12 @@
 package com.example.routes
 
 import com.example.data.remote.dto.UserDto
+import com.example.data.remote.dto.person.CreatePersonDto
+import com.example.data.remote.dto.person.FoundPersonAddressDto
+import com.example.data.remote.dto.person.FoundPersonWithAddressDto
 import com.example.domain.mappers.mapUserDtoToUserModel
 import com.example.domain.model.UserModel
+import com.example.domain.repository.PersonRepository
 import com.example.domain.repository.UserRepository
 import com.example.domain.repository.UserRepositoryImpl
 import com.example.util.GenericResponse
@@ -12,24 +16,23 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.userRoute() {
-//    val db: Database = DbConnection.getDatabaseInstance()
+fun Route.personRoute() {
+
+    val personRepository = PersonRepository()
 
 
-    route("/users"){
-        val repository: UserRepository = UserRepositoryImpl()
+
+    route("/persons"){
 
 
         get("/test"){
-            call.respondText("Hello World User Test!")
+            call.respondText("Hello World Person Test!")
         }
 
         post("/register") {
-            val userDto: UserDto = call.receive()
-            println("userDto------> $userDto")
-            val userModel: UserModel = mapUserDtoToUserModel(userDto)
-            println("userModel------> $userModel")
-            val savedUser = repository.addUser(userModel)
+            val personDto: CreatePersonDto = call.receive()
+
+            val savedUser = personRepository.create(personDto)
 
 
             if (savedUser != null){
@@ -54,14 +57,14 @@ fun Route.userRoute() {
 
 
         get("/all") {
-            val usersList = repository.getAllUsers()
+            val personList: List<FoundPersonWithAddressDto> = personRepository.findAll()
 
-            if (usersList != null){
+            if (personList != null){
                 call.respond(
                     HttpStatusCode.OK,
                     GenericResponse(
                         isSuccess = true,
-                        data =  usersList.toString()
+                        data =  personList.toString()
                     )
                 )
 
@@ -78,14 +81,14 @@ fun Route.userRoute() {
 
 
         get("/{id}") {
-//            val found = repository.find(call.parameters["id"]?.toInt()!!)
-//            found?.let { call.respond(it) } ?: call.respond(HttpStatusCode.NotFound)
+            val found = personRepository.find(call.parameters["id"]?.toInt()!!)
+            found?.let { call.respond(it) } ?: call.respond(HttpStatusCode.NotFound)
         }
         delete("/{id}") {
-//            call.respond(repository.delete(call.parameters["id"]?.toInt()!!))
+            call.respond(personRepository.delete(call.parameters["id"]?.toInt()!!))
         }
         put("/{id}") {
-//            call.respond(repository.update(call.parameters["id"]?.toInt()!!, call.receive()))
+            call.respond(personRepository.update(call.parameters["id"]?.toInt()!!, call.receive()))
         }
 
 
