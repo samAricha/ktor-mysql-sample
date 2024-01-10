@@ -2,6 +2,7 @@ package com.example.routes
 
 import com.example.data.remote.dto.UserDto
 import com.example.domain.mappers.mapUserDtoToUserModel
+import com.example.domain.mappers.mapUserModelToUserDto
 import com.example.domain.model.UserModel
 import com.example.domain.repository.UserRepository
 import com.example.domain.repository.UserRepositoryImpl
@@ -54,14 +55,14 @@ fun Route.userRoute() {
 
 
         get("/all") {
-            val usersList = repository.getAllUsers()
+            val usersListDto = repository.getAllUsers().map(::mapUserModelToUserDto)
 
-            if (usersList != null){
+            if (usersListDto != null){
                 call.respond(
                     HttpStatusCode.OK,
                     GenericResponse(
                         isSuccess = true,
-                        data =  usersList.toString()
+                        data =  usersListDto
                     )
                 )
 

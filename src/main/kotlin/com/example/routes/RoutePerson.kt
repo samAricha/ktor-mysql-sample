@@ -64,7 +64,7 @@ fun Route.personRoute() {
                     HttpStatusCode.OK,
                     GenericResponse(
                         isSuccess = true,
-                        data =  personList.toString()
+                        data =  personList
                     )
                 )
 

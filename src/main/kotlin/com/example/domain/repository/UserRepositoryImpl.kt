@@ -12,7 +12,7 @@ class UserRepositoryImpl : UserRepository{
 //        userId = row[UserEntity.userId],
         first = row[UserEntity.first],
         last = row[UserEntity.last],
-        dob = row[UserEntity.last],
+        dob = row[UserEntity.dob],
         gender = row[UserEntity.gender],
     )
     override fun getAllUsers(): List<UserModel> = transaction{
