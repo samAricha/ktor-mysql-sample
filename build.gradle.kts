@@ -35,8 +35,6 @@ dependencies {
 
 //    implementation("org.ktorm:ktorm-core:3.6.0")
     implementation("mysql:mysql-connector-java:8.0.33")
-
-
     implementation("org.jetbrains.exposed:exposed-core:0.46.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.46.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.46.0")
